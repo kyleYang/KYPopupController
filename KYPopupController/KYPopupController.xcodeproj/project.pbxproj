@@ -14,6 +14,7 @@
 		187D4DBF1B4D74E000C8B11A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 187D4DBE1B4D74E000C8B11A /* Images.xcassets */; };
 		187D4DC21B4D74E000C8B11A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 187D4DC01B4D74E000C8B11A /* LaunchScreen.xib */; };
 		187D4DCE1B4D74E000C8B11A /* KYPopupControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 187D4DCD1B4D74E000C8B11A /* KYPopupControllerTests.m */; };
+		187D4DFC1B4D7FB800C8B11A /* KYPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187D4DFB1B4D7FB800C8B11A /* KYPopupController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,8 @@
 		187D4DC71B4D74E000C8B11A /* KYPopupControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KYPopupControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		187D4DCC1B4D74E000C8B11A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		187D4DCD1B4D74E000C8B11A /* KYPopupControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYPopupControllerTests.m; sourceTree = "<group>"; };
+		187D4DFA1B4D7FB800C8B11A /* KYPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KYPopupController.h; sourceTree = "<group>"; };
+		187D4DFB1B4D7FB800C8B11A /* KYPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KYPopupController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,7 @@
 		187D4DB01B4D74E000C8B11A /* KYPopupController */ = {
 			isa = PBXGroup;
 			children = (
+				187D4DF91B4D7F7B00C8B11A /* KYPopupController */,
 				187D4DB51B4D74E000C8B11A /* AppDelegate.h */,
 				187D4DB61B4D74E000C8B11A /* AppDelegate.m */,
 				187D4DB81B4D74E000C8B11A /* ViewController.h */,
@@ -117,6 +121,15 @@
 				187D4DCC1B4D74E000C8B11A /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		187D4DF91B4D7F7B00C8B11A /* KYPopupController */ = {
+			isa = PBXGroup;
+			children = (
+				187D4DFA1B4D7FB800C8B11A /* KYPopupController.h */,
+				187D4DFB1B4D7FB800C8B11A /* KYPopupController.m */,
+			);
+			path = KYPopupController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,6 +234,7 @@
 			files = (
 				187D4DBA1B4D74E000C8B11A /* ViewController.m in Sources */,
 				187D4DB71B4D74E000C8B11A /* AppDelegate.m in Sources */,
+				187D4DFC1B4D7FB800C8B11A /* KYPopupController.m in Sources */,
 				187D4DB41B4D74E000C8B11A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,6 +362,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = KYPopupController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -358,6 +373,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = KYPopupController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

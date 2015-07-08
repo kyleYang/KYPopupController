@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -15,7 +16,43 @@
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="swi-aN-NM5">
+                                <rect key="frame" x="250" y="285" width="100" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="TLk-mO-th9"/>
+                                    <constraint firstAttribute="height" constant="30" id="gL3-2H-1uJ"/>
+                                </constraints>
+                                <state key="normal" title="Style2">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fzQ-9E-IlT">
+                                <rect key="frame" x="250" y="340" width="100" height="30"/>
+                                <state key="normal" title="Style3">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qx7-ew-Qha">
+                                <rect key="frame" x="250" y="230" width="100" height="30"/>
+                                <state key="normal" title="Style1">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="fzQ-9E-IlT" firstAttribute="width" secondItem="swi-aN-NM5" secondAttribute="width" id="0w3-xu-XOJ"/>
+                            <constraint firstAttribute="centerY" secondItem="swi-aN-NM5" secondAttribute="centerY" id="2kB-Gh-Zgw"/>
+                            <constraint firstItem="fzQ-9E-IlT" firstAttribute="centerX" secondItem="swi-aN-NM5" secondAttribute="centerX" id="UGV-Jc-VJp"/>
+                            <constraint firstItem="fzQ-9E-IlT" firstAttribute="width" secondItem="Qx7-ew-Qha" secondAttribute="width" id="Uht-ps-3w9"/>
+                            <constraint firstAttribute="centerX" secondItem="swi-aN-NM5" secondAttribute="centerX" id="en6-mv-ZUK"/>
+                            <constraint firstItem="swi-aN-NM5" firstAttribute="top" secondItem="Qx7-ew-Qha" secondAttribute="bottom" constant="25" id="h1M-Vx-egb"/>
+                            <constraint firstItem="fzQ-9E-IlT" firstAttribute="centerX" secondItem="Qx7-ew-Qha" secondAttribute="centerX" id="hWI-fN-cnX"/>
+                            <constraint firstItem="fzQ-9E-IlT" firstAttribute="top" secondItem="swi-aN-NM5" secondAttribute="bottom" constant="25" id="lJ1-Zg-urJ"/>
+                            <constraint firstItem="fzQ-9E-IlT" firstAttribute="height" secondItem="swi-aN-NM5" secondAttribute="height" id="uZN-18-ONB"/>
+                            <constraint firstItem="fzQ-9E-IlT" firstAttribute="height" secondItem="Qx7-ew-Qha" secondAttribute="height" id="v0B-FN-XhB"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
