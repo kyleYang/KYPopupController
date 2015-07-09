@@ -11,5 +11,10 @@
 @interface ViewController : UIViewController
 
 
+- (IBAction)style1:(id)sender;
+- (IBAction)style2:(id)sender;
+- (IBAction)style3:(id)sender;
+
+
 @end
 

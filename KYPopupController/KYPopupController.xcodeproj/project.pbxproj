@@ -176,6 +176,7 @@
 		187D4DA61B4D74E000C8B11A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = KY;
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = xiaoluuu;
 				TargetAttributes = {
@@ -432,6 +433,7 @@
 				187D4DD31B4D74E000C8B11A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		187D4DD41B4D74E000C8B11A /* Build configuration list for PBXNativeTarget "KYPopupControllerTests" */ = {
 			isa = XCConfigurationList;
@@ -440,6 +442,7 @@
 				187D4DD61B4D74E000C8B11A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
