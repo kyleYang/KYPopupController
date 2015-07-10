@@ -1,14 +1,14 @@
 # KYPopupController
 This reposityory is a porject for a popup viewcontroller that user can custom the style
 Most of the code copy from CNPPopupController（https://github.com/carsonperrotti/CNPPopupController）
-Thanks for @carsonperrotti.
+Thanks for [@carsonperrotti](https://github.com/carsonperrotti)
 
 Now , we can custom the popup view more easy. Three example show user how to use it.
-In carsonperrotti's project, we can only add string,image and button.
+In [@carsonperrotti's](https://github.com/carsonperrotti) project, we can only add string,image and button.
 Now we can add any view . if we set the category property viewWidth and viewHeight, or set the size of a view when we init it, the view will be displaied on the contentView as you set. If not seet, the view'widht will as big as the contentView,and the height will equal to the width.
 
 #Introduction
-It's easy to use the KYPopupController. I got the idea from carsonperrotti, and I change his code for I need to custom the popup view.
+It's easy to use the KYPopupController. I got the idea from [@carsonperrotti](https://github.com/carsonperrotti), and I change his code for I need to custom the popup view.
 
 * ![The demo gif](https://raw.githubusercontent.com/kyleYang/KYPopupController/master/image/demo.gif)
 * Welcome to the KYPopupController wiki!
