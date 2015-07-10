@@ -7,6 +7,7 @@
 //
 
 #import "KYPopupController.h"
+#import <objc/runtime.h>
 
 #define KY_SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define KY_IS_IPAD   (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -153,6 +154,33 @@
 
 - (void)dismissPopupControllerAnimated:(BOOL)flag
 {
+    if (self.theme.detectBackgroundDismissTouch) {
+        [self setDismissedConstraints];
+    } else {
+        [self setOriginConstraints];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(popupControllerWillDismis:)]) {
+        [self.delegate popupControllerWillDismis:self];
+    }
+    
+    [UIView animateWithDuration:flag ? 0.3f : 0.0f
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.maskView.alpha = 0.0f;
+                         [self.maskView needsUpdateConstraints];
+                         [self.maskView layoutIfNeeded];
+                     }
+                     completion:^(BOOL finished) {
+                         [self.maskView removeFromSuperview];
+                         self.maskView = nil;
+                         self.contentView = nil;
+                         if ([self.delegate respondsToSelector:@selector(popupControllerDidDismiss:)]) {
+                             [self.delegate popupControllerDidDismiss:self];
+                         }
+                     }];
+
     
 }
 
@@ -189,31 +217,43 @@
     [self.contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
     self.contentView.clipsToBounds = YES;
     self.contentView.backgroundColor = self.theme.backgroundColor;
-    self.contentView.layer.cornerRadius = self.theme.style == KYPopupStyleCentered ? self.theme.cornerRadius : 0.0f;
+    self.contentView.layer.cornerRadius = self.theme.popupStyle == KYPopupStyleCentered ? self.theme.cornerRadius : 0.0f;
     [self.maskView addSubview:self.contentView];
     
     //have top notice or close button
     self.noticeLable = [[UILabel alloc] init];
     self.noticeLable.font = [UIFont systemFontOfSize:14.0f];
     self.noticeLable.textColor = [UIColor blackColor];
+    self.noticeLable.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:self.noticeLable];
     self.noticeLable.hidden = !self.theme.noticeShow;
     
     self.closeButton = [[UIButton alloc] init];
-    [self.closeButton addTarget:self action:@selector(didTapOnMaskView) forControlEvents:UIControlEventTouchUpInside];
+    [self.closeButton addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.closeButton];
+    self.closeButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.closeButton.hidden = !self.theme.closeShow;
+    UIImage *closeImage = [UIImage imageNamed:@"pop_delete"];
+    [self.closeButton setBackgroundImage:closeImage forState:UIControlStateNormal];
     
+    CGFloat closeWidth = closeImage.size.width;
+    CGFloat closeHeight = closeImage.size.height;
+
     NSDictionary *views = NSDictionaryOfVariableBindings(_noticeLable,_closeButton);
-    NSDictionary *metrics = @{@"left":@(self.theme.popupContentInsets.left),@"right":@(self.theme.popupContentInsets.right)};
+    NSDictionary *metrics = @{@"left":@(self.theme.popupContentInsets.left),@"right":@(self.theme.popupContentInsets.right),@"width":@(closeWidth)};
     
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.closeButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1.0f constant:self.theme.popupContentInsets.top]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-left-[_noticeLable]-20-[_closeButton]-right-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.closeButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0f constant:closeHeight]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-left-[_noticeLable]-20-[_closeButton(width)]-right-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
     
     
     if (self.popupTitle) {
         UILabel *title = [self multilineLabelWithAttributedString:self.popupTitle];
         [self.contentView addSubview:title];
+        
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:title attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:self.theme.popupContentInsets.left]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:title attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-self.theme.popupContentInsets.right]];
+        
     }
     
     
@@ -222,12 +262,28 @@
             if ([content isKindOfClass:[NSAttributedString class]]) {
                 UILabel *label = [self multilineLabelWithAttributedString:(NSAttributedString *)content];
                 [self.contentView addSubview:label];
+                
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:self.theme.popupContentInsets.left]];
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-self.theme.popupContentInsets.right]];
             }
             else if ([content isKindOfClass:[UIImage class]]) {
                 UIImageView *imageView = [self centeredImageViewForImage:(UIImage *)content];
                 [imageView sizeToFit];
                 [self.contentView addSubview:imageView];
-                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:imageView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0]];
+                
+                
+                CGFloat precent = 1;
+                if (CGRectGetWidth(imageView.frame) < 1 || CGRectGetHeight(imageView.frame) < 1) {
+                    precent = 1;
+                }else{
+                    precent = CGRectGetHeight(imageView.frame)/CGRectGetWidth(imageView.frame);
+                }
+                
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:imageView attribute:NSLayoutAttributeWidth multiplier:precent constant:0]];
+                
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:self.theme.popupContentInsets.left]];
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-self.theme.popupContentInsets.right]];
+                
             }
             else if([content isKindOfClass:[UIView class]]){
                 
@@ -235,15 +291,46 @@
                 view.translatesAutoresizingMaskIntoConstraints = NO;
                 [self.contentView addSubview:view];
                 
-                CGFloat precent = 0.5;
-                if (CGRectGetWidth(view.frame) < 1 || CGRectGetHeight(view.frame) < 1) {
-                    precent = 0.5;
-                }else{
-                    precent = CGRectGetHeight(view.frame)/CGRectGetWidth(view.frame);
+                CGFloat width = 0.0f;
+                if (CGRectGetWidth(view.frame) >= 1) {
+                    width = CGRectGetWidth(view.frame);
+                }else if([view.viewWidth floatValue] >=1){
+                    width = [view.viewWidth floatValue];
                 }
                 
-                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeWidth multiplier:precent constant:0]];
+                CGFloat height = 0.0f;
+                if (CGRectGetHeight(view.frame) >= 1) {
+                    height = CGRectGetHeight(view.frame);
+                }else if([view.viewHeight floatValue] >=1){
+                    height = [view.viewHeight floatValue];
+                }
                 
+                if (width > 0.0f) {
+                    
+                    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1.0 constant:width]];
+                    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
+                    
+                }else{
+                    
+                    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:self.theme.popupContentInsets.left]];
+                    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-self.theme.popupContentInsets.right]];
+                    
+                }
+                
+                
+                if(height > 0.0f){
+                    
+                    
+                    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:height]];
+                    
+                }else{
+                    
+                    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0f]];
+                    
+                }
+                
+                
+              
                 
             }
             
@@ -255,6 +342,11 @@
         for (KYPopupButtonItem *item in self.buttonItems) {
             KYPopupButton *button = [self buttonItem:item];
             [self.contentView addSubview:button];
+            
+            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:self.theme.popupContentInsets.left]];
+            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-self.theme.popupContentInsets.right]];
+            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:button.item.buttonHeight]];
+            
         }
     }
 
@@ -295,7 +387,7 @@
             [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-(self.theme.popupContentInsets.bottom + (self.destructiveButtonItem ? self.destructiveButtonItem.buttonHeight : 0.0f))]];
         }
         
-        if ([view isKindOfClass:[UIButton class]]) {
+        if ([view isKindOfClass:[KYPopupButton class]]) {
             KYPopupButton *button = (KYPopupButton *)view;
             [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:button.item.buttonHeight]];
             [button addTarget:self action:@selector(actionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -312,8 +404,7 @@
             [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
             [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         }
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:self.theme.popupContentInsets.left]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0 constant:-self.theme.popupContentInsets.right]];
+        
     }];
 
     
@@ -333,7 +424,7 @@
    
     
     
-    if (self.theme.style == KYPopupStyleFullscreen) {
+    if (self.theme.popupStyle == KYPopupStyleFullscreen) {
         self.contentViewWidth = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeWidth multiplier:KY_IS_IPAD?0.5:1.0 constant:0];
         [self.maskView addConstraint:self.contentViewWidth];
         self.contentViewCenterYConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0];
@@ -341,7 +432,7 @@
         self.contentViewCenterXConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
         [self.maskView addConstraint:self.contentViewCenterXConstraint];
     }
-    else if (self.theme.style == KYPopupStyleActionSheet) {
+    else if (self.theme.popupStyle == KYPopupStyleActionSheet) {
         self.contentViewHeight = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeWidth multiplier:KY_IS_IPAD?0.5:1.0 constant:0];
         [self.maskView addConstraint:self.contentViewHeight];
         self.contentViewBottom = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
@@ -391,14 +482,53 @@
     [button.layer setCornerRadius:item.cornerRadius];
     [button.layer setBorderColor:item.borderColor.CGColor];
     [button.layer setBorderWidth:item.borderWidth];
+    button.actionBlock = item.selectionHandler;
     button.item = item;
     return button;
 }
 
 
+
+- (void)setOriginConstraints {
+    
+    if (self.theme.popupStyle == KYPopupStyleCentered) {
+        switch (self.theme.presentationStyle) {
+            case KYPopupPresentationStyleFadeIn:
+                self.contentViewCenterYConstraint.constant = 0;
+                self.contentViewCenterXConstraint.constant = 0;
+                break;
+            case KYPopupPresentationStyleSlideInFromTop:
+                self.contentViewCenterYConstraint.constant = -self.applicationKeyWindow.bounds.size.height;
+                self.contentViewCenterXConstraint.constant = 0;
+                break;
+            case KYPopupPresentationStyleSlideInFromBottom:
+                self.contentViewCenterYConstraint.constant = self.applicationKeyWindow.bounds.size.height;
+                self.contentViewCenterXConstraint.constant = 0;
+                break;
+            case KYPopupPresentationStyleSlideInFromLeft:
+                self.contentViewCenterYConstraint.constant = 0;
+                self.contentViewCenterXConstraint.constant = -self.applicationKeyWindow.bounds.size.height;
+                break;
+            case KYPopupPresentationStyleSlideInFromRight:
+                self.contentViewCenterYConstraint.constant = 0;
+                self.contentViewCenterXConstraint.constant = self.applicationKeyWindow.bounds.size.height;
+                break;
+            default:
+                self.contentViewCenterYConstraint.constant = 0;
+                self.contentViewCenterXConstraint.constant = 0;
+                break;
+        }
+    }
+    else if (self.theme.popupStyle == KYPopupStyleActionSheet) {
+        self.contentViewBottom.constant = self.applicationKeyWindow.bounds.size.height;
+    }
+}
+
+
+
 - (void)setDismissedConstraints {
     
-    if (self.theme.style == KYPopupStyleCentered) {
+    if (self.theme.popupStyle == KYPopupStyleCentered) {
         switch (self.theme.presentationStyle) {
             case KYPopupPresentationStyleFadeIn:
                 self.contentViewCenterYConstraint.constant = 0;
@@ -426,28 +556,33 @@
                 break;
         }
     }
-    else if (self.theme.style == KYPopupStyleActionSheet) {
+    else if (self.theme.popupStyle == KYPopupStyleActionSheet) {
         self.contentViewBottom.constant = self.applicationKeyWindow.bounds.size.height;
     }
 }
 
 - (void)setPresentedConstraints {
     
-    if (self.theme.style == KYPopupStyleCentered) {
+    if (self.theme.popupStyle == KYPopupStyleCentered) {
         self.contentViewCenterYConstraint.constant = 0;
         self.contentViewCenterXConstraint.constant = 0;
     }
-    else if (self.theme.style == KYPopupStyleActionSheet) {
+    else if (self.theme.popupStyle == KYPopupStyleActionSheet) {
         self.contentViewBottom.constant = 0;
     }
 }
 
 
-
+- (void)closeAction
+{
+    [self dismissPopupControllerAnimated:YES];
+}
 
 - (void)didTapOnMaskView
 {
-    
+    if (self.theme.detectBackgroundDismissTouch) {
+        [self dismissPopupControllerAnimated:YES];
+    }
 }
 
 
@@ -568,7 +703,7 @@ UIInterfaceOrientationMask ESInterfaceOrientationMaskFromOrientation(UIInterface
     theme.closeShow = YES;
     theme.noticeShow = YES;
     theme.detectBackgroundDismissTouch = FALSE;
-    theme.style = KYPopupStyleCentered;
+    theme.popupStyle = KYPopupStyleCentered;
     return theme;
 }
 
@@ -583,9 +718,81 @@ UIInterfaceOrientationMask ESInterfaceOrientationMaskFromOrientation(UIInterface
 + (KYPopupButtonItem *)defaultButtonItemWithTitle:(NSAttributedString *)title backgroundColor:(UIColor *)color
 {
     KYPopupButtonItem *item = [[KYPopupButtonItem alloc] init];
-    
+    item.buttonTitle = title;
+    item.backgroundColor = color;
     return item;
 }
 
 
 @end
+
+
+
+static char KYPopupViewWidth;
+static char KYPopupViewHeight;
+
+@implementation UIView(popup)
+@dynamic viewWidth;
+@dynamic viewHeight;
+
+- (void)setViewWidth:(NSNumber*)viewWidth
+{
+    objc_setAssociatedObject(self, &KYPopupViewWidth, viewWidth, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSNumber *)viewWidth
+{
+    return objc_getAssociatedObject(self, &KYPopupViewWidth);
+}
+
+
+- (void)setViewHeight:(NSNumber*)viewHeight
+{
+    objc_setAssociatedObject(self, &KYPopupViewHeight, viewHeight, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSNumber *)viewHeight
+{
+    return objc_getAssociatedObject(self, &KYPopupViewHeight);
+}
+
+
+@end
+
+
+
+static char const * const ActionBlockKey = "ActionBlockKey";
+
+@implementation UIButton (Blocks)
+@dynamic actionBlock;
+
+- (id)initWitActionBlock:(SelectionHandler)block{
+    self = [super init];
+    if (self) {
+        self.actionBlock = [block copy];
+        [self addTarget:self action:@selector(fireActionBlock) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return self;
+}
+
+- (void)fireActionBlock {
+    
+    if (self.actionBlock) {
+        self.actionBlock();
+    }
+    
+}
+
+
+- (SelectionHandler)actionBlock{
+    return objc_getAssociatedObject(self, ActionBlockKey);
+}
+
+- (void)setActionBlock:(SelectionHandler)actionBlock{
+    [self addTarget:self action:@selector(fireActionBlock) forControlEvents:UIControlEventTouchUpInside];
+    objc_setAssociatedObject(self, ActionBlockKey, actionBlock,  OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+@end
+
+

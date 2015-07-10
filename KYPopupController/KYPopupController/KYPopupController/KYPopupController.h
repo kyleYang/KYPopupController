@@ -59,6 +59,14 @@ typedef NS_ENUM(NSInteger, KYPopupPresentationStyle) {
 
 @property (nonatomic, weak) id <KYPopupControllerDelegate> delegate;
 
+//position constraint for view when popup need to change it's position like a keyboard show
+@property (nonatomic, strong, readonly) NSLayoutConstraint *contentViewCenterXConstraint;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *contentViewCenterYConstraint;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *contentViewWidth;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *contentViewHeight;
+@property (nonatomic, strong, readonly) NSLayoutConstraint *contentViewBottom;
+
+
 //init the popup with ttile , contents(if content is a view, the height and width should have value, if not it will be seted a default value) and button.
 -(instancetype)initWithWithTitle:(NSAttributedString *)title
                          content:(NSArray *)contents buttonItems:(NSArray*)items
@@ -78,8 +86,8 @@ typedef NS_ENUM(NSInteger, KYPopupPresentationStyle) {
 @optional
 - (void)popupControllerWillPresent:(KYPopupController *)controller;
 - (void)popupControllerDidPresent:(KYPopupController *)controller;
-- (void)popupController:(KYPopupController *)controller willDismissWithButtonTitle:(NSString *)title;
-- (void)popupController:(KYPopupController *)controller didDismissWithButtonTitle:(NSString *)title;
+- (void)popupControllerWillDismis:(KYPopupController *)controller;
+- (void)popupControllerDidDismiss:(KYPopupController *)controller;
 
 @end
 
@@ -110,7 +118,7 @@ typedef NS_ENUM(NSInteger, KYPopupPresentationStyle) {
 @property (nonatomic, assign) BOOL noticeShow;
 
 //THe style of sht popup. default is KYPopupStyleCentered;
-@property (nonatomic, assign) KYPopupStyle style;
+@property (nonatomic, assign) KYPopupStyle popupStyle;
 
 // How the popup is presented (Defauly slide in from bottom)
 @property (nonatomic, assign) KYPopupPresentationStyle presentationStyle;
@@ -124,7 +132,7 @@ typedef NS_ENUM(NSInteger, KYPopupPresentationStyle) {
 @end
 
 
-typedef void(^SelectionHandler) (KYPopupButtonItem *item);
+typedef void(^SelectionHandler) (void);
 
 @interface KYPopupButtonItem : NSObject
 
@@ -139,5 +147,27 @@ typedef void(^SelectionHandler) (KYPopupButtonItem *item);
 + (KYPopupButtonItem *)defaultButtonItemWithTitle:(NSAttributedString *)title backgroundColor:(UIColor *)color;
 
 
+@end
+
+
+
+@interface UIView(popup)
+
+@property (nonatomic, strong) NSNumber *viewWidth;
+@property (nonatomic, strong) NSNumber *viewHeight;
 
 @end
+
+
+
+
+@interface UIButton (Blocks)
+
+@property (nonatomic, copy) SelectionHandler actionBlock;
+
+- (id)initWitActionBlock:(SelectionHandler)block;
+
+@end
+
+
+
