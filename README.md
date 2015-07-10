@@ -49,14 +49,13 @@ It's easy to use the KYPopupController. I got the idea from [@carsonperrotti](ht
 
 #example for present
 
-self.popupController = [[KYPopupController alloc] initWithWithTitle:nil content:@[line,circleView,noticeString] buttonItems:nil destructiveButtonItem:nil];
-    self.popupController.theme = [KYPopupTheme defaultTheme];
-    self.popupController.theme.backgroundColor = HexRGB(0xe5e5e5);
-    self.popupController.theme.detectBackgroundDismissTouch = FALSE;
-    self.popupController.theme.popupStyle = KYPopupStyleCentered;
-    self.popupController.theme.bordePadding = -80;
-    self.popupController.delegate = self;
-    self.popupController.theme.presentationStyle = KYPopupPresentationStyleSlideInFromLeft;
-    [self.popupController presentPopupControllerAnimated:YES];
-    
-    self.popupController.noticeLable.text = @"发起拼单成功";
+self.popupController = [[KYPopupController alloc] initWithWithTitle:nil content:@[line,circleView,noticeString] buttonItems:nil destructiveButtonItem:nil];    
+self.popupController.theme = [KYPopupTheme defaultTheme];    
+self.popupController.theme.backgroundColor = HexRGB(0xe5e5e5);   
+self.popupController.theme.detectBackgroundDismissTouch = FALSE;   
+self.popupController.theme.popupStyle = KYPopupStyleCentered;  
+self.popupController.theme.bordePadding = -80;   
+self.popupController.delegate = self;   
+self.popupController.theme.presentationStyle = KYPopupPresentationStyleSlideInFromLeft;   
+[self.popupController presentPopupControllerAnimated:YES];   
+self.popupController.noticeLable.text = @"发起拼单成功";
