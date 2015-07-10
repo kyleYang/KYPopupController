@@ -137,9 +137,11 @@
     surebutton.viewHeight = @(37);
     [surebutton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [surebutton setTitle:@"确认" forState:UIControlStateNormal];
+    
+    __weak typeof(self) weakSelf = self;
     surebutton.actionBlock = ^(){
         
-        NSLog(@"确定");
+        weakSelf.popupController.noticeLable.text = @"兑换成功";
         
     };
     
@@ -155,6 +157,7 @@
     checkItem.selectionHandler = ^(){
         
         NSLog(@"测试kypopupbutton");
+        [weakSelf.popupController dismissPopupControllerAnimated:YES];
         
     };
     checkItem.buttonHeight = 40;
