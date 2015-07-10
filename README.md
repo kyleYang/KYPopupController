@@ -13,7 +13,8 @@ It's easy to use the KYPopupController. I got the idea from [@carsonperrotti](ht
 * ![The demo gif](https://raw.githubusercontent.com/kyleYang/KYPopupController/master/image/demo.gif)
 * Welcome to the KYPopupController wiki!
 
-#Customization
+#Customization 
+```
 //The color of maskView.Begin alpha from 0.0f to 1.0f. Default is [UIColor clearColor];
 @property (nonatomic, strong) UIColor *maskViewColor;
 
@@ -46,9 +47,9 @@ It's easy to use the KYPopupController. I got the idea from [@carsonperrotti](ht
 
 //When popup is show ,any touch out of the popup be detected. default is false.
 @property (nonatomic, assign) BOOL detectBackgroundDismissTouch;
-
+```
 #example for present
-
+```
 self.popupController = [[KYPopupController alloc] initWithWithTitle:nil content:@[line,circleView,noticeString] buttonItems:nil destructiveButtonItem:nil];    
 self.popupController.theme = [KYPopupTheme defaultTheme];    
 self.popupController.theme.backgroundColor = HexRGB(0xe5e5e5);   
@@ -59,3 +60,4 @@ self.popupController.delegate = self;
 self.popupController.theme.presentationStyle = KYPopupPresentationStyleSlideInFromLeft;   
 [self.popupController presentPopupControllerAnimated:YES];   
 self.popupController.noticeLable.text = @"发起拼单成功";
+```
