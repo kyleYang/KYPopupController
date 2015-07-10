@@ -38,6 +38,8 @@ typedef NS_ENUM(NSInteger, KYPopupPresentationStyle) {
 
 @interface KYPopupController : NSObject
 
+//the content view of the popup view
+@property (nonatomic, strong, readonly) UIView *contentView;
 
 //The top-left notice label.
 @property (nonatomic, strong, readonly) UILabel *noticeLable;
@@ -104,6 +106,9 @@ typedef NS_ENUM(NSInteger, KYPopupPresentationStyle) {
 
 // Corner radius of the popup content view (Default 6.0)
 @property (nonatomic, assign) CGFloat cornerRadius;
+
+// border padding of the popup content view (Default -40.0)
+@property (nonatomic, assign) CGFloat bordePadding;
 
 // Inset of labels, images and buttons on the popup content view (Default 16.0 on all sides)
 @property (nonatomic, assign) UIEdgeInsets popupContentInsets;

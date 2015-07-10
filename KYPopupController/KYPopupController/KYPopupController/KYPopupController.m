@@ -106,7 +106,17 @@
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameOrOrientationChanged:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
         }
 
+        //init titleLabel and close button
+        self.noticeLable = [[UILabel alloc] init];
+        self.noticeLable.font = [UIFont systemFontOfSize:14.0f];
+        self.noticeLable.textColor = [UIColor blackColor];
+        self.noticeLable.translatesAutoresizingMaskIntoConstraints = NO;
         
+        
+        self.closeButton = [[UIButton alloc] init];
+        [self.closeButton addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
+        self.closeButton.translatesAutoresizingMaskIntoConstraints = NO;
+       
         
     }
     
@@ -195,6 +205,7 @@
     self.maskView = [[UIView alloc] init];
     self.maskView.translatesAutoresizingMaskIntoConstraints = NO;
     self.maskView.alpha = 0.0f;
+    self.maskView.backgroundColor = self.theme.maskViewColor;
     
     //setup background detect gesture
     if (self.theme.detectBackgroundDismissTouch) {
@@ -219,19 +230,12 @@
     self.contentView.backgroundColor = self.theme.backgroundColor;
     self.contentView.layer.cornerRadius = self.theme.popupStyle == KYPopupStyleCentered ? self.theme.cornerRadius : 0.0f;
     [self.maskView addSubview:self.contentView];
-    
+        
     //have top notice or close button
-    self.noticeLable = [[UILabel alloc] init];
-    self.noticeLable.font = [UIFont systemFontOfSize:14.0f];
-    self.noticeLable.textColor = [UIColor blackColor];
-    self.noticeLable.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:self.noticeLable];
     self.noticeLable.hidden = !self.theme.noticeShow;
     
-    self.closeButton = [[UIButton alloc] init];
-    [self.closeButton addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.closeButton];
-    self.closeButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.closeButton.hidden = !self.theme.closeShow;
     UIImage *closeImage = [UIImage imageNamed:@"pop_delete"];
     [self.closeButton setBackgroundImage:closeImage forState:UIControlStateNormal];
@@ -288,25 +292,25 @@
             else if([content isKindOfClass:[UIView class]]){
                 
                 UIView *view = (UIView *)content;
+                view.clipsToBounds = YES;
                 view.translatesAutoresizingMaskIntoConstraints = NO;
                 [self.contentView addSubview:view];
                 
                 CGFloat width = 0.0f;
-                if (CGRectGetWidth(view.frame) >= 1) {
-                    width = CGRectGetWidth(view.frame);
-                }else if([view.viewWidth floatValue] >=1){
+                if([view.viewWidth floatValue] >=1){
                     width = [view.viewWidth floatValue];
+                }else if (CGRectGetWidth(view.frame) >= 1) {
+                    width = CGRectGetWidth(view.frame);
                 }
                 
                 CGFloat height = 0.0f;
-                if (CGRectGetHeight(view.frame) >= 1) {
-                    height = CGRectGetHeight(view.frame);
-                }else if([view.viewHeight floatValue] >=1){
+                if([view.viewHeight floatValue] >=1){
                     height = [view.viewHeight floatValue];
+                }else if (CGRectGetHeight(view.frame) >= 1) {
+                    height = CGRectGetHeight(view.frame);
                 }
                 
                 if (width > 0.0f) {
-                    
                     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1.0 constant:width]];
                     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
                     
@@ -319,19 +323,14 @@
                 
                 
                 if(height > 0.0f){
-                    
-                    
                     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:height]];
                     
                 }else{
-                    
                     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0f]];
                     
                 }
                 
-                
-              
-                
+            
             }
             
         }
@@ -445,7 +444,7 @@
             self.contentViewWidth = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeWidth multiplier:0.4 constant:0];
         }
         else {
-            self.contentViewWidth = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:-40];
+            self.contentViewWidth = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:self.theme.bordePadding];
         }
         [self.maskView addConstraint:self.contentViewWidth];
         self.contentViewCenterYConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.maskView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0];
@@ -699,6 +698,7 @@ UIInterfaceOrientationMask ESInterfaceOrientationMaskFromOrientation(UIInterface
     theme.backgroundColor = [UIColor whiteColor];
     theme.cornerRadius = 6.0f;
     theme.contentVerticalPadding = 12.0f;
+    theme.bordePadding = -40;
     theme.popupContentInsets = UIEdgeInsetsMake(16.0f, 16.0f, 16.0f, 16.0f);
     theme.closeShow = YES;
     theme.noticeShow = YES;
