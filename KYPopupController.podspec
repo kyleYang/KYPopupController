@@ -16,8 +16,8 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "KYPopupController"
-  s.version      = "0.0.1"
-  s.summary      = "A short description of KYPopupController."
+  s.version      = "0.1"
+  s.summary      = "KYPopupController is more custom popup view for CNPPopupController"
 
   s.description  = <<-DESC
                    A longer description of KYPopupController in Markdown format.
@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
                    * Finally, don't worry about the indent, CocoaPods strips it!
                    DESC
 
-  s.homepage     = "http://EXAMPLE/KYPopupController"
+  s.homepage     = "https://github.com/kyleYang/KYPopupController"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -39,7 +39,7 @@ Pod::Spec.new do |s|
   #  Popular ones are 'MIT', 'BSD' and 'Apache License, Version 2.0'.
   #
 
-  s.license      = "MIT (example)"
+  s.license      = "MIT"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
 
 
@@ -78,7 +78,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "http://EXAMPLE/KYPopupController.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/kyleYang/KYPopupController.git", :tag => "0.1" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
