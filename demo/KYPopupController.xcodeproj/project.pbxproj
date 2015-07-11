@@ -14,11 +14,11 @@
 		187D4DBF1B4D74E000C8B11A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 187D4DBE1B4D74E000C8B11A /* Images.xcassets */; };
 		187D4DC21B4D74E000C8B11A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 187D4DC01B4D74E000C8B11A /* LaunchScreen.xib */; };
 		187D4DCE1B4D74E000C8B11A /* KYPopupControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 187D4DCD1B4D74E000C8B11A /* KYPopupControllerTests.m */; };
-		187D4E0F1B514EB800C8B11A /* KYPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187D4E0E1B514EB800C8B11A /* KYPopupController.m */; };
-		187D4E141B514EC400C8B11A /* dark_pix_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187D4E101B514EC400C8B11A /* dark_pix_line@2x.png */; };
-		187D4E151B514EC400C8B11A /* dark_pix_line@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187D4E111B514EC400C8B11A /* dark_pix_line@3x.png */; };
-		187D4E161B514EC400C8B11A /* pop_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187D4E121B514EC400C8B11A /* pop_delete@2x.png */; };
-		187D4E171B514EC400C8B11A /* pop_delete@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187D4E131B514EC400C8B11A /* pop_delete@3x.png */; };
+		187D4E2C1B515BC900C8B11A /* KYPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187D4E2B1B515BC900C8B11A /* KYPopupController.m */; };
+		187D4E321B515BD300C8B11A /* dark_pix_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187D4E2E1B515BD300C8B11A /* dark_pix_line@2x.png */; };
+		187D4E331B515BD300C8B11A /* dark_pix_line@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187D4E2F1B515BD300C8B11A /* dark_pix_line@3x.png */; };
+		187D4E341B515BD300C8B11A /* pop_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187D4E301B515BD300C8B11A /* pop_delete@2x.png */; };
+		187D4E351B515BD300C8B11A /* pop_delete@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187D4E311B515BD300C8B11A /* pop_delete@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,12 +45,12 @@
 		187D4DC71B4D74E000C8B11A /* KYPopupControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KYPopupControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		187D4DCC1B4D74E000C8B11A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		187D4DCD1B4D74E000C8B11A /* KYPopupControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYPopupControllerTests.m; sourceTree = "<group>"; };
-		187D4E0D1B514EB800C8B11A /* KYPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KYPopupController.h; path = ../../../KYPopupController/KYPopupController.h; sourceTree = "<group>"; };
-		187D4E0E1B514EB800C8B11A /* KYPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KYPopupController.m; path = ../../../KYPopupController/KYPopupController.m; sourceTree = "<group>"; };
-		187D4E101B514EC400C8B11A /* dark_pix_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dark_pix_line@2x.png"; path = "../../../../resource/dark_pix_line@2x.png"; sourceTree = "<group>"; };
-		187D4E111B514EC400C8B11A /* dark_pix_line@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dark_pix_line@3x.png"; path = "../../../../resource/dark_pix_line@3x.png"; sourceTree = "<group>"; };
-		187D4E121B514EC400C8B11A /* pop_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pop_delete@2x.png"; path = "../../../../resource/pop_delete@2x.png"; sourceTree = "<group>"; };
-		187D4E131B514EC400C8B11A /* pop_delete@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pop_delete@3x.png"; path = "../../../../resource/pop_delete@3x.png"; sourceTree = "<group>"; };
+		187D4E2A1B515BC900C8B11A /* KYPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KYPopupController.h; sourceTree = "<group>"; };
+		187D4E2B1B515BC900C8B11A /* KYPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KYPopupController.m; sourceTree = "<group>"; };
+		187D4E2E1B515BD300C8B11A /* dark_pix_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_pix_line@2x.png"; sourceTree = "<group>"; };
+		187D4E2F1B515BD300C8B11A /* dark_pix_line@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark_pix_line@3x.png"; sourceTree = "<group>"; };
+		187D4E301B515BD300C8B11A /* pop_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pop_delete@2x.png"; sourceTree = "<group>"; };
+		187D4E311B515BD300C8B11A /* pop_delete@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pop_delete@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +92,8 @@
 		187D4DB01B4D74E000C8B11A /* KYPopupController */ = {
 			isa = PBXGroup;
 			children = (
-				187D4E001B514DB200C8B11A /* KYPopupController */,
+				187D4E2D1B515BD300C8B11A /* resource */,
+				187D4E291B515BC900C8B11A /* KYPopupController */,
 				187D4DB51B4D74E000C8B11A /* AppDelegate.h */,
 				187D4DB61B4D74E000C8B11A /* AppDelegate.m */,
 				187D4DB81B4D74E000C8B11A /* ViewController.h */,
@@ -131,25 +132,26 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		187D4E001B514DB200C8B11A /* KYPopupController */ = {
+		187D4E291B515BC900C8B11A /* KYPopupController */ = {
 			isa = PBXGroup;
 			children = (
-				187D4E0D1B514EB800C8B11A /* KYPopupController.h */,
-				187D4E0E1B514EB800C8B11A /* KYPopupController.m */,
-				187D4E031B514DB200C8B11A /* resource */,
+				187D4E2A1B515BC900C8B11A /* KYPopupController.h */,
+				187D4E2B1B515BC900C8B11A /* KYPopupController.m */,
 			);
-			path = KYPopupController;
+			name = KYPopupController;
+			path = ../../KYPopupController;
 			sourceTree = "<group>";
 		};
-		187D4E031B514DB200C8B11A /* resource */ = {
+		187D4E2D1B515BD300C8B11A /* resource */ = {
 			isa = PBXGroup;
 			children = (
-				187D4E101B514EC400C8B11A /* dark_pix_line@2x.png */,
-				187D4E111B514EC400C8B11A /* dark_pix_line@3x.png */,
-				187D4E121B514EC400C8B11A /* pop_delete@2x.png */,
-				187D4E131B514EC400C8B11A /* pop_delete@3x.png */,
+				187D4E2E1B515BD300C8B11A /* dark_pix_line@2x.png */,
+				187D4E2F1B515BD300C8B11A /* dark_pix_line@3x.png */,
+				187D4E301B515BD300C8B11A /* pop_delete@2x.png */,
+				187D4E311B515BD300C8B11A /* pop_delete@3x.png */,
 			);
-			path = resource;
+			name = resource;
+			path = ../../resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,10 +237,10 @@
 			files = (
 				187D4DBD1B4D74E000C8B11A /* Main.storyboard in Resources */,
 				187D4DC21B4D74E000C8B11A /* LaunchScreen.xib in Resources */,
-				187D4E141B514EC400C8B11A /* dark_pix_line@2x.png in Resources */,
-				187D4E171B514EC400C8B11A /* pop_delete@3x.png in Resources */,
-				187D4E161B514EC400C8B11A /* pop_delete@2x.png in Resources */,
-				187D4E151B514EC400C8B11A /* dark_pix_line@3x.png in Resources */,
+				187D4E321B515BD300C8B11A /* dark_pix_line@2x.png in Resources */,
+				187D4E351B515BD300C8B11A /* pop_delete@3x.png in Resources */,
+				187D4E341B515BD300C8B11A /* pop_delete@2x.png in Resources */,
+				187D4E331B515BD300C8B11A /* dark_pix_line@3x.png in Resources */,
 				187D4DBF1B4D74E000C8B11A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,7 +261,7 @@
 			files = (
 				187D4DBA1B4D74E000C8B11A /* ViewController.m in Sources */,
 				187D4DB71B4D74E000C8B11A /* AppDelegate.m in Sources */,
-				187D4E0F1B514EB800C8B11A /* KYPopupController.m in Sources */,
+				187D4E2C1B515BC900C8B11A /* KYPopupController.m in Sources */,
 				187D4DB41B4D74E000C8B11A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
